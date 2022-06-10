@@ -47,13 +47,13 @@ namespace Dennis.BinaryUtils
 		/// Helper method for reading typed values
 		/// </summary>
 		/// <typeparam name="T">Type of value to read</typeparam>
-		/// <param name="varIntMode">If <c>true</c>, will read int and string with varint.
+		/// <param name="varint">If <c>true</c>, will read int and string with varint.
 		/// <c>false</c> to disable.
 		/// <c>null</c> to get default from <see cref="VarIntConvert.VarIntMode"/></param>
 		/// <returns></returns>
-		public static T? Read<T>(this BinaryReader reader, bool? varIntMode = null)
+		public static T? Read<T>(this BinaryReader reader, bool? varint = null)
 		{
-			return (T?)reader.Read(typeof(T), varIntMode);
+			return (T?)reader.Read(typeof(T), varint);
 		}
 
 		/// <summary>
@@ -66,11 +66,11 @@ namespace Dennis.BinaryUtils
 		/// </summary>
 		/// <param name="reader"></param>
 		/// <param name="type"></param>
-		/// <param name="varIntMode"></param>
+		/// <param name="varint"></param>
 		/// <returns></returns>
-		public static object? Read(this BinaryReader reader, Type type, bool? varIntMode = null)
+		public static object? Read(this BinaryReader reader, Type type, bool? varint = null)
 		{
-			if (varIntMode == null) varIntMode = VarIntConvert.VarIntMode;
+			if (varint == null) varint = VarIntConvert.VarIntMode;
 			if (type == typeof(byte)) return reader.ReadByte();
 			if (type == typeof(bool)) return reader.ReadBoolean();
 			if (type == typeof(char)) return reader.ReadChar();
@@ -80,14 +80,14 @@ namespace Dennis.BinaryUtils
 			if (type == typeof(short)) return reader.ReadInt16();
 			if (type == typeof(int))
 			{
-				return varIntMode == true ? reader.ReadVarInt() : (object)reader.ReadInt32();
+				return varint == true ? reader.ReadVarInt() : (object)reader.ReadInt32();
 			}
 			if (type == typeof(long)) return reader.ReadInt64();
 			if (type == typeof(sbyte)) return reader.ReadSByte();
 			if (type == typeof(float)) return reader.ReadSingle();
 			if (type == typeof(string))
 			{
-				return varIntMode == true ? reader.ReadVString() : reader.ReadString();
+				return varint == true ? reader.ReadVString() : reader.ReadString();
 			};
 			if (type == typeof(ushort)) return reader.ReadUInt16();
 			if (type == typeof(uint)) return reader.ReadUInt32();
